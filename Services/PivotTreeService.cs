@@ -2,6 +2,7 @@ using System.Data;
 using System.Linq;
 using System.Collections.Generic;
 using Ballerina.Models;
+using Ballerina.Helpers;
 
 namespace Ballerina.Services
 {
@@ -13,13 +14,18 @@ namespace Ballerina.Services
             IEnumerable<string> pivotColumns,
             IEnumerable<string> valueColumns)
         {
+            List<PivotTree> trees = new List<PivotTree>();
+
             foreach(DataRow row in input.Rows)
             {
                 foreach(string valueColumn in valueColumns)
                 {
                     var tree = GeneratePivotTree(input, primaryKeyColumns, pivotColumns, valueColumn);
+                    trees.Add(tree);
                 }
             }
+
+            return trees;
         }
 
         private PivotTree GeneratePivotTree(
@@ -34,7 +40,7 @@ namespace Ballerina.Services
             combinedPivotColumns.AddRange(pivotColumns);
             var combinedWithData = new List<string>(combinedPivotColumns);
             combinedWithData.Add(valueColumn);
-            var distinctPivotSet = GetDistinct(input, combinedPivotColumns);
+            var distinctPivotSet = DataHelpers.GetDistinct(input, combinedPivotColumns);
 
             //For each unique PK combo, generate tree
             //Assume moving left to right in tabular space -> moving deeper in tree space
@@ -68,12 +74,6 @@ namespace Ballerina.Services
             }
 
             return tree;
-        }
-
-        private DataTable GetDistinct(DataTable input, IEnumerable<string> columnNames)
-        {
-            DataView view = new DataView(input);
-            return view.ToTable(true, columnNames.ToArray());
         }
     }
 }

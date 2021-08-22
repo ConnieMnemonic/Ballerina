@@ -20,5 +20,10 @@ namespace Ballerina.Models
                     Convert.ChangeType(other.Value, other.Type)
                 );
         }
+
+        public override string ToString()
+        {
+            return Value.ToString();
+        }
     }
 }

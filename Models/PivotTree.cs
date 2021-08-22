@@ -11,7 +11,7 @@ namespace Ballerina.Models
 
         public string InputValueColumn { get; set; }
 
-        public PivotTreeNode Root { get; set;} = new PivotTreeNode();
+        public PivotTreeNode Root { get; set;} = new PivotTreeNode("Root", null);
 
         //Tree Structure
         //GroupingColumns -> PivotColumns
