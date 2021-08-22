@@ -10,11 +10,11 @@ namespace Ballerina
         public DataTable Pivot(PivotSpec spec)
         {
             var pivotTreeService = new PivotTreeService();
-            var columnHeaderService = new ColumnHeaderService();
+            var pivotTableService = new PivotTableService();
             var pivotingService = new PivotingService();
 
             var pivotTrees = pivotTreeService.GeneratePivotTrees(spec);
-            var output = columnHeaderService.GenerateOutputDataTable(spec);
+            var output = pivotTableService.GenerateOutputDataTable(spec);
 
             pivotingService.Pivot(spec, output, pivotTrees);
 
