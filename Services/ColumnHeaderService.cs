@@ -8,35 +8,35 @@ namespace Ballerina.Services
 {
     public class ColumnHeaderService
     {
-        public DataTable GenerateOutputDataTableSchemaForValueColumn(
-            DataTable input,
-            IEnumerable<string> primaryKeyColumns,
-            IEnumerable<string> pivotColumns,
-            string valueColumn)
+        public DataTable GenerateOutputDataTable(PivotSpec spec)
         {
             DataTable output = new DataTable();
 
-            var distinctPivotSet = DataHelpers.GetDistinct(input, pivotColumns);
+            var distinctPivotSet = DataHelpers.GetDistinct(spec.Input, spec.PivotColumns);
 
-            //For each unique PK combo, generate tree
-            //Assume moving left to right in tabular space -> moving deeper in tree space
-
-            foreach(DataColumn column in input.Columns)
+            foreach(string valueColumn in spec.ValueColumns)
             {
-                if(column.ColumnName == valueColumn)
+                //For each unique PK combo, generate tree
+                //Assume moving left to right in tabular space -> moving deeper in tree space
+
+                foreach(DataColumn column in spec.Input.Columns)
                 {
-                    //If it's our target...
-                    foreach(DataRow row in distinctPivotSet.Rows)
+                    if(column.ColumnName == valueColumn)
                     {
-                        output.Columns.Add(GenerateColumnName(row, valueColumn));
+                        //If it's our target...
+                        foreach(DataRow row in distinctPivotSet.Rows)
+                        {
+                            output.Columns.Add(GenerateColumnName(row, valueColumn));
+                        }
+                    }
+                    else
+                    {
+                        //Otherwise flat copy
+                        output.Columns.Add(column.ColumnName);
                     }
                 }
-                else
-                {
-                    //Otherwise flat copy
-                    output.Columns.Add(column.ColumnName);
-                }
             }
+
 
             return output;
         }

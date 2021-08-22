@@ -8,19 +8,15 @@ namespace Ballerina.Services
 {
     public class PivotTreeService
     {
-        public List<PivotTree> GeneratePivotTrees(
-            DataTable input,
-            IEnumerable<string> primaryKeyColumns, 
-            IEnumerable<string> pivotColumns,
-            IEnumerable<string> valueColumns)
+        public List<PivotTree> GeneratePivotTrees(PivotSpec spec)
         {
             List<PivotTree> trees = new List<PivotTree>();
 
-            foreach(DataRow row in input.Rows)
+            foreach(DataRow row in spec.Input.Rows)
             {
-                foreach(string valueColumn in valueColumns)
+                foreach(string valueColumn in spec.ValueColumns)
                 {
-                    var tree = GeneratePivotTree(input, primaryKeyColumns, pivotColumns, valueColumn);
+                    var tree = GeneratePivotTree(spec.Input, spec.PrimaryKeyColumns, spec.PivotColumns, valueColumn);
                     trees.Add(tree);
                 }
             }

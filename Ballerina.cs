@@ -7,15 +7,18 @@ namespace Ballerina
 {
     public class Ballerina
     {
-        public DataTable Pivot(
-            DataTable input,
-            IEnumerable<string> primaryKeyColumns,
-            IEnumerable<string> pivotColumns,
-            IEnumerable<string> valueColumns)
+        public DataTable Pivot(PivotSpec spec)
         {
             var pivotTreeService = new PivotTreeService();
-            var pivotTree = pivotTreeService.GeneratePivotTrees(input, primaryKeyColumns, pivotColumns, valueColumns);
-            
+            var columnHeaderService = new ColumnHeaderService();
+            var pivotingService = new PivotingService();
+
+            var pivotTrees = pivotTreeService.GeneratePivotTrees(spec);
+            var output = columnHeaderService.GenerateOutputDataTable(spec);
+
+            pivotingService.Pivot(spec, output, pivotTrees);
+
+            return output;
         }
     }
 }
