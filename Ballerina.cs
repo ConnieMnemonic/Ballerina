@@ -18,7 +18,7 @@ namespace Ballerina
 
             pivotingService.Pivot(spec, output, pivotTrees);
 
-            return output;
+            return output.DataTable;
         }
     }
 }

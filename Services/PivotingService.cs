@@ -6,7 +6,7 @@ namespace Ballerina.Services
 {
     public class PivotingService
     {
-        public void Pivot(PivotSpec spec, DataTable outputTable, IEnumerable<PivotTree> pivotTrees)
+        public void Pivot(PivotSpec spec, PivotTable outputTable, IEnumerable<PivotTree> pivotTrees)
         {
             
         }
